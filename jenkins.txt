@@ -1,0 +1,57 @@
+// Basic Jenkins Pipeline Commands
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                // Build commands
+                sh 'mvn clean install'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Test commands
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy commands
+                sh 'docker build -t myapp .'
+                sh 'docker run -d myapp'
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
+
+// Common Jenkins CLI Commands
+/*
+jenkins-cli.jar commands:
+build <job>                    - Builds a job
+list-jobs                      - Lists all jobs
+who-am-i                       - Reports your credentials
+reload-configuration           - Reloads Jenkins configuration
+safe-restart                   - Safely restarts Jenkins
+*/
+
+// Jenkins Environment Variables
+/*
+Common variables:
+${BUILD_NUMBER}     - Current build number
+${JOB_NAME}        - Name of the project
+${WORKSPACE}       - Absolute path of workspace
+${BUILD_URL}       - URL of this build
+${GIT_COMMIT}      - Git commit hash
+*/
